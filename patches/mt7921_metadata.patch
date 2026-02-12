@@ -1,0 +1,26 @@
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -1,6 +1,12 @@
+ // SPDX-License-Identifier: ISC
+ /*
+  * MediaTek MT7921 PCIe driver
++ * 
++ * This driver supports MediaTek MT7921 WiFi adapters including:
++ * - MT7921 (PCI ID: 0x7921)
++ * - MT7922 (PCI ID: 0x7922) 
++ * - MT7921 variant (PCI ID: 0x7902) - Added by community patch
++ * 
+  * Copyright (C) 2020 MediaTek Inc.
+  */
+ 
+@@ -44,6 +50,8 @@ static const struct pci_device_id mt7921_pci_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7921),
+ 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7922),
+ 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++	/* MT7921 variant with PCI ID 0x7902 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7902),
++		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(pci, mt7921_pci_table);
