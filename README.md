@@ -1,114 +1,104 @@
-# MT7921 WiFi Patch for Linux Kernel
+# MediaTek MT7921 PCI ID 7902 Linux Driver
 
-## 📋 Обзор
+## 🎯 Objective
+Add support for MediaTek MT7921 WiFi adapter with PCI ID 14c3:7902 to the Linux kernel.
 
-Проект для добавления поддержки WiFi адаптера MediaTek MT7921 (PCI ID: 0x7902) в ядро Linux. Патч добавляет новый PCI ID в драйвер mt7921 для корректной работы устройства.
+## � What's Included
 
-## 🎯 Цель проекта
+### ✅ Kernel Patch
+- **File:** `patches/0001-net-wireless-mediatek-mt76-mt7921-Add-support-for-PCI-ID-7902.patch`
+- **Purpose:** Add PCI ID 7902 support to MT7921 driver
+- **Format:** Properly formatted for Linux kernel submission
+- **Status:** Ready for submission to linux-wireless@vger.kernel.org
 
-Добавить поддержку WiFi адаптера MediaTek MT7921 с PCI ID 0x7902, который не распознается стандартным драйвером ядра Linux.
-
-## 📁 Структура проекта
-
-```
-.
-├── README.md                    # Этот файл
-├── BUILD_PATCHED_ISO.sh         # Скрипт создания кастомного ISO
-├── BUILD_CUSTOM_UBUNTU.sh       # Альтернативный скрипт сборки
-├── patches/                     # Патчи для ядра
-│   ├── mt7921_add_7902.patch    # Основной патч
-│   └── mt7921_metadata.patch    # Метаданные патча
-├── docs/                        # Документация
-│   ├── INSTALL.md               # Инструкция по установке
-│   ├── TESTING.md               # Тестирование
-│   └── TROUBLESHOOTING.md       # Решение проблем
-├── scripts/                     # Вспомогательные скрипты
-│   ├── apply_patch.sh           # Применение патча
-│   ├── test_wifi.sh             # Тестирование WiFi
-│   └── check_kernel.sh          # Проверка версии ядра
-└── ubuntu-22.04.5-desktop-amd64.iso  # Образ Ubuntu
+### 📊 Patch Details
+```c
+{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7902),
+    .driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
 ```
 
-## 🔧 Использование
+This adds support for device `14c3:7902` with the same configuration as the existing `14c3:7922` variant.
 
-### Быстрый старт
+## � Usage
 
-1. **Создание кастомного ISO:**
-   ```bash
-   sudo ./BUILD_PATCHED_ISO.sh
-   ```
+### For Kernel Developers
+```bash
+# Submit patch to Linux kernel
+git send-email \
+  --to="nbd@nbd.name, lorenzo@kernel.org" \
+  --cc="linux-wireless@vger.kernel.org" \
+  --cc="mediatek@lists.infradead.org" \
+  --subject-prefix="PATCH net-next" \
+  patches/0001-net-wireless-mediatek-mt76-mt7921-Add-support-for-PCI-ID-7902.patch
+```
 
-2. **Установка с кастомного ISO:**
-   - Запишите образ `ubuntu-22.04.3-mt7921-patched.iso` на флешку
-   - Установите Ubuntu как обычно
-   - WiFi должен работать сразу после установки
+### For End Users
+After patch acceptance in upstream kernel:
+1. Update to kernel version that includes the patch
+2. The MT7921 device with PCI ID 7902 will work automatically
+3. No additional driver installation required
 
-### Ручная установка
+## 📧 Hardware Support
 
-Если у вас уже установлена система:
+### ✅ Supported Device
+- **Device:** MediaTek MT7921 WiFi Adapter
+- **PCI ID:** 14c3:7902
+- **Configuration:** MT7921_FIRMWARE_WM
+- **Status:** Patch ready for upstream submission
 
-1. **Проверьте версию ядра:**
-   ```bash
-   ./scripts/check_kernel.sh
-   ```
+### 🏷️ Commonly Found In
+- Acer Aspire 3 laptops
+- Other budget notebooks with MediaTek WiFi
 
-2. **Примените патч:**
-   ```bash
-   sudo ./scripts/apply_patch.sh
-   ```
+## � Testing Results
 
-3. **Пересоберите модуль:**
-   ```bash
-   sudo ./scripts/rebuild_module.sh
-   ```
+### ✅ Verified On
+- **Hardware:** Acer Aspire 3 with MT7921 (14c3:7902)
+- **Kernel:** Linux 6.8.0 (Ubuntu 24.04.4)
+- **Functionality:** WiFi connection, network scanning, data transfer
+- **Status:** Working correctly with existing MT7921_FIRMWARE_WM config
 
-4. **Проверьте работу:**
-   ```bash
-   ./scripts/test_wifi.sh
-   ```
+## 📋 Kernel Submission
 
-## 📦 Системные требования
+### 🎯 Maintainers
+- **Felix Fietkau** <nbd@nbd.name>
+- **Lorenzo Bianconi** <lorenzo@kernel.org>
 
-- **ОС:** Ubuntu 20.04+ / Debian 10+
-- **Ядро:** Linux 5.8+ (рекомендуется 5.15+)
-- **Пакеты:** build-essential, linux-headers-generic
-- **Права:** root/sudo для установки
+### � Mailing Lists
+- **Primary:** linux-wireless@vger.kernel.org
+- **Secondary:** mediatek@lists.infradead.org
+- **Network:** netdev@vger.kernel.org
 
-## 🐛 Устранение проблем
+### 📝 Submission Process
+1. **Check formatting:** `./scripts/checkpatch.pl patches/0001-*.patch`
+2. **Get maintainers:** `./scripts/get_maintainer.pl patches/0001-*.patch`
+3. **Send patch:** `git send-email` with proper recipients
+4. **Monitor:** patchwork.kernel.org for review status
 
-См. [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) для решения распространенных проблем.
+## 📄 License
+MIT License - see [LICENSE](LICENSE) file for details.
 
-## 📚 Документация
+## � Links
 
-- [Инструкция по установке](docs/INSTALL.md)
-- [Тестирование](docs/TESTING.md)
-- [Устранение проблем](docs/TROUBLESHOOTING.md)
+- **Linux Kernel:** https://www.kernel.org/
+- **Patchwork:** https://patchwork.kernel.org/project/linux-wireless/
+- **Mailing Lists:** https://lore.kernel.org/linux-wireless/
+- **Submission Guide:** https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
-## 🤝 Вклад в проект
+## � Contributing
 
-1. Сделайте fork проекта
-2. Создайте ветку для вашей функции: `git checkout -b feature/new-feature`
-3. Внесите изменения
-4. Отправьте пулл-реквест
+### 🎯 How to Contribute
+1. **Test** the patch thoroughly
+2. **Review** the patch for coding standards
+3. **Submit** improvements via pull requests
+4. **Discuss** changes in kernel mailing lists
 
-## 📄 Лицензия
-
-MIT License - см. файл LICENSE
-
-## 🔗 Полезные ссылки
-
-- [MediaTek MT7921 Datasheet](https://www.mediatek.com/products/broadband-wifi/mt7921)
-- [Linux Wireless Documentation](https://wireless.wiki.kernel.org/)
-- [Kernel Development Guide](https://www.kernel.org/doc/html/latest/)
-
-## 📞 Поддержка
-
-Если у вас возникли проблемы:
-1. Проверьте [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
-2. Создайте Issue на GitHub
-3. Приложите вывод `dmesg` и `lspci -nn`
+### 📋 Development
+- **Branch:** master
+- **Format:** Linux kernel patch format
+- **Documentation:** Inline with patch
+- **Testing:** Required before submission
 
 ---
 
-**Версия:** 1.0.0  
-**Последнее обновление:** 2026-02-12
+**Adding WiFi support for MediaTek MT7921 devices to the Linux kernel!** 🚀
