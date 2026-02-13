@@ -1,0 +1,31 @@
+From: Tomas <tomas@example.com>
+Date: Thu, 13 Feb 2026 10:15:00 +0000
+Subject: [PATCH] net: wireless: mediatek: mt76: mt7921: Add support for PCI ID 7902
+
+This patch adds support for MediaTek MT7921 WiFi adapter with PCI ID 14c3:7902.
+The device is functionally identical to MT7921 with PCI ID 7922 and uses
+the same firmware and driver configuration.
+
+The device has been tested on Acer Aspire 3 laptop and works correctly
+with existing MT7921_FIRMWARE_WM configuration.
+
+Signed-off-by: Tomas <tomas@example.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 123456789abc..123456789def 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -45,6 +45,9 @@ static const struct pci_device_id mt7921_pci_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7922),
+ 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7902),
++		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(pci, mt7921_pci_table);
+-- 
+2.34.1
